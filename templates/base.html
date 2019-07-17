@@ -44,9 +44,8 @@
 
         {% with messages = get_flashed_messages() %}
         {% if messages %}
-            <ul class=flashes>
                 {% for message in messages %}
-                <li>{{ message }}</li>
+                <h3 class="error">{{ message }}</h3>
                 {% endfor %}
             </ul>
         {% endif %}

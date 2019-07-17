@@ -134,7 +134,8 @@ def totals():
         else:
             return render_template('totals.html',pete_amount=str(pete_final_amount),jess_amount=str(jess_final_amount),table_made="No table created", csv_file=file_name, do_not_display=123)
     except ValueError:
-        return "<br><h2><strong>ERROR</strong><br>Please input CSV file</h2>"
+        flash('No spreadsheet found', 'error')
+        return redirect('/')
 
 @app.route("/table-data", methods=["POST", "GET"])
 def table_data():
@@ -170,7 +171,7 @@ def login():
             session['user'] = existing_user.email
             return redirect("/")
         else:
-            flash('username or password not found')
+            flash('username or password not found', 'error')
             return redirect('/login')
     return render_template("login.html")
 
