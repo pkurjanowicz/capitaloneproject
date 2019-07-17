@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br><br><br>
+        <h2>Past Data</h2>
+        <form action='/past-data' method="POST">
+        <select name="table_list" class="custom-select">
+        {% for name in list %}
+            {% if name == table_name %}
+            <option selected="selected" value="{{name}}" class="custom-select-selected">{{name}}</option>
+            {% else %}
+            <option value="{{name}}" class="custom-select-selected">{{name}}</option>
+            {% endif %}
+        {% endfor %}
+        </select>
+        <input id="csv_file" type="hidden" name="csv_file" value={{csv_file}} />
+        <input type="submit" value="Submit" class="submit">
+        </form>
+        <h4>{{data | safe}}</h4>
+{% endblock %}

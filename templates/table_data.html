@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br><br><br>
+        <h2>Table Data</h2>
+        <p>Pete's card number: 9246</p>
+        <p>Jess' card number: 717</p>
+        <div class="container">
+            <div class="left-element">
+                <h3>Category Breakdown</h3>
+                <h4>{{data | safe}}</h4>
+            </div>
+            <div class="right-element">
+                <h3>Total Amounts</h3>
+                <h4>{{data_raw | safe}}</h4>
+            </div>
+        </div>
+{% endblock %}
+

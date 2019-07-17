@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+            <br><br><br><br>
+            <div class="hero-image">
+                    <div class="hero-text">
+                    <h1>How much do you owe?</h1>
+                    </div>
+            </div><br>
+        <form action="/totals" method="post">
+            <label for="csv_file">Please paste the name of the CSV file </label><br><br>
+            <input id="csv_file" type="text" name="csv_file" /><br><br>
+            <label for="jess_adjustment">How much to move from Jess' balance to Pete's?(optional) </label><br><br>
+            <input id="jess_adjustment" type="text" name="jess_adjustment" /><br><br>
+            <label for="pete_adjustment">How much to move from Pete's balance to Jess'?(optional) </label><br><br>
+            <input id="pete_adjustment" type="text" name="pete_adjustment" /><br><br>
+            <label for="table_name">What is the name of the new table?(optional) </label><br><br>
+            <input id="table_name" type="text" name="table_name" /><br><br>
+            <input type="submit" class="submit"/>
+        </form>
+{% endblock %}
