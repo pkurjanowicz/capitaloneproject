@@ -1,30 +1,42 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>Register New Account</h2>
-<form action="/register" method="post">
-    <table class="register-login-table">
-        <tbody><tr>
-            <td><label for="email">Email</label></td>
-            <td>
-                <input name="email" type="email" name="email">
-            </td>
-        </tr>
-        <tr>
-            <td><label for="password">New Password</label></td>
-            <td>
-                <input name="password" type="password">
-            </td>
-        </tr>
-        <tr>
-            <td><label for="verify">Verify Password</label></td>
-            <td>
-                <input name="verify" type="password">
-            </td>
-        </tr>
-    </tbody></table><br>
-    <input type="submit" value="Register"class="submit"/>
+<form action="/register" method="post" class="register-form">  
+    <div class="login-page">
+        <div class="form">
+            <h1>Register New Account</h1>
+            <input name="email" type="email" name="email" placeholder="email"/>
+            <input name="password" type="password" placeholder="password"/>
+            <input input name="verify" type="password" placeholder="verify password"/>
+            <button>create</button>
+            <p class="message">Already registered? <a href="/login">Sign In</a></p>
+        </div>
+    </div>
 </form>
 
 {% endblock %}
 
+
+<!-- 
+
+    <table class="register-login-table">
+            <tbody><tr>
+                <td><label for="email">Email</label></td>
+                <td>
+                    <input name="email" type="email" name="email">
+                </td>
+            </tr>
+            <tr>
+                <td><label for="password">New Password</label></td>
+                <td>
+                    <input name="password" type="password">
+                </td>
+            </tr>
+            <tr>
+                <td><label for="verify">Verify Password</label></td>
+                <td>
+                    <input name="verify" type="password">
+                </td>
+            </tr>
+        </tbody></table><br>
+        <input type="submit" value="Register"class="submit"/> -->
