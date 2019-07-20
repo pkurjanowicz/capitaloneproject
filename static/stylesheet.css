@@ -1,83 +1,68 @@
 form input[type='text'] {
-        float:left;
-        height:24px;
-        padding:0 5px;
-        border:0;
-        margin:0;
-        background:#fff;
-        font-size:11px;
-        border: 1px solid #0771D4;
-    }
+    float:left;
+    height:24px;
+    padding:0 5px;
+    border:0;
+    margin:0;
+    background:#fff;
+    font-size:11px;
+    border: 1px solid #0771D4;
+}
 
 .submit {
-	height:55px;
-	padding:0 10px 0 10px;
-    border:0;
-    border-radius: 10px;
-	background:#166aba;
-	cursor:pointer;
-	color:#fff;
-	font-weight:bold;
-    font-size:18px
+    font-family: "Roboto", sans-serif;
+    float: left;
+    background: #166aba;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    top: 0; 
+    cursor: pointer;
+    padding: 5px 15px;
+    text-decoration: none;
+    font-weight:bold;
+    font-size:14px;
+    margin: 0 3px;
 }
 
-.button1 {
-	height:55px;
-	padding:0 10px 0 10px;
-    border:0;
-    border-radius: 10px;
-	background:#166aba;
-	cursor:pointer;
-	color:#fff;
-	font-weight:bold;
-    font-size:18px;
-    text-decoration: none;
-}
 .navbar_buttons {
-	height:27px;
-	padding:20px 20px 20px 20px;
-    border:0;
-    border-radius: 10px;
-	background:#166aba;
-	cursor:pointer;
-	color:#fff;
-	font-weight:bold;
-    font-size:20px;
+    font-family: "Roboto", sans-serif;
+    overflow: hidden;
+    float: left;
+    background: #166aba;
+    color: #FFFFFF;
+    position: static; 
+    text-transform: uppercase;
+    top: 0; 
+    cursor: pointer;
+    padding: 20px;
     text-decoration: none;
+    font-weight:bold;
+    font-size:14px;
+    margin: 0 3px;
+}
+.navbar_buttons:hover,.navbar_buttons:active,.navbar_buttons:focus {
+    background: #2d90ed;
 }
 .navbar {
-    float: left;
-    overflow: hidden;
-    background-color: #166aba;
-    position: static; /* Set the navbar to fixed position */
-    top: 0; /* Position the navbar at the top of the page */
-    border-radius: 10px;
-}
-.navbar a {
-    float: left;
+    font-family: "Roboto", sans-serif;
+    top: 0; 
+    cursor: pointer;
     display: block;
-    color: #f2f2f2;
-    text-align: center;
-    /* padding: 14px 16px; */
     text-decoration: none;
+    font-weight:bold;
+    font-size:20px;
 }
 
 .navbar_right {
-    overflow: hidden;
+    font-family: "Roboto", sans-serif;
     float: right;
-    background-color: #166aba;
-    position: static; 
+    color: #FFFFFF;
+    text-transform: uppercase;
     top: 0; 
-    border-radius: 10px;
-}
-.navbar_right a {
-    float: left;
-    display: block;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
+    cursor: pointer;
     text-decoration: none;
 }
+
 .user_name {
     float: right;
     position: relative;
@@ -86,27 +71,13 @@ form input[type='text'] {
     border-radius: 10px;
 }
 
-table.register-login-table {
-    background-color: #166aba;
-    color: white;
-    border-collapse: collapse;
-    vertical-align: center;
-    padding: 15px;
-}
-table.register-login-table tbody tr{
-    background-color: #166aba;
-    color: white;
-    border-collapse: collapse;
-    vertical-align: center;
-    padding: 15px;
-}
-
 .table th {
     background-color: #166aba;
     color: white;
     border-collapse: collapse;
     vertical-align: center;
 }
+
 tr:nth-child(odd)	{ 
     background-color:#eee;
     border: 1px solid black;
@@ -155,7 +126,7 @@ body, html {
     color: white;
 }
 .table-amount {
-    font:20px Arial, Helvetica, sans-serif;
+    font:20px "Roboto", sans-serif;
     padding: 20px;
     max-width: 300px;
     border-style: solid;
@@ -164,7 +135,7 @@ body, html {
     border-radius: 10px;
 }
 .table-made {
-    font:20px Arial, Helvetica, sans-serif;
+    font:20px "Roboto", sans-serif;
     padding: 0px 20px 60px;
     max-width: 300px;
     max-height: 10px;
@@ -173,7 +144,7 @@ body, html {
     background-color: white;
     border-radius: 10px;
 }
-.container {
+.container_table {
     width:1500px;
     position: relative;
 }
@@ -193,7 +164,7 @@ body, html {
     color: red;
 }
 .custom-select {
-    font:20px Arial, Helvetica, sans-serif;
+    font:14px "Roboto", sans-serif;
     background-color: #166aba;
     color: white;
 }
