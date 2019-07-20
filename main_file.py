@@ -163,6 +163,8 @@ def past_data():
 
 @app.route("/login", methods=['POST', 'GET'])
 def login():
+    users = User.query.all()
+    session['user'] = ''
     if request.method == "POST":
         email = request.form['email']
         existing_user = User.query.filter_by(email=email).first()
@@ -173,7 +175,7 @@ def login():
         else:
             flash('username or password not found', 'error')
             return redirect('/login')
-    return render_template("login.html")
+    return render_template("login.html",users=users)
 
 @app.route("/register", methods=['POST', 'GET'])
 def register():

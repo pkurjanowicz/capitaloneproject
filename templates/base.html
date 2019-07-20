@@ -30,7 +30,7 @@
         
         
         <div class="navbar_right">
-            {% if 'user' in session %}
+            {% if 'user' in session and 'user' in session != '' %}
                 <a href="/logout" class="navbar_buttons">logout</a>   
             {% endif %}  
         </div>
