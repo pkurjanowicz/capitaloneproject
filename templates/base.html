@@ -26,14 +26,11 @@
                     <input type="submit" value="Current Data" class="navbar_buttons"/>
                 </form>
             </a> 
-        </div>
+        
             {% endif %} 
         {% endif %} 
-        
-        
-        <div class="navbar_right">
             {% if 'user' in session and login != 1 %}
-            <a>
+            <a class="navbar_logout">
                 <form action="/logout" method="GET" >
                     <input type="submit" value="logout" class="navbar_buttons" />
                 </form>
