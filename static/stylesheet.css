@@ -59,10 +59,7 @@ form input[type='text'] {
 
 .user_name {
     float: right;
-    position: relative;
-    top: 10px;
-    left: 90px;
-    border-radius: 10px;
+    margin: 0 10px;
 }
 
 .table th {

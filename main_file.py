@@ -60,6 +60,35 @@ def combined_totals(csv_data):
     except FileNotFoundError:
         return ""
 
+def adjustments(file):
+    file_name = file
+    jess_adjustment = request.form["jess_adjustment"]
+    pete_adjustment = request.form["pete_adjustment"]
+    pete_amount,jess_amount = combined_totals(file_name)
+    if jess_adjustment == '':
+        jess_adjustment = 0
+        pete_final_amount = pete_amount
+    if pete_adjustment == '':
+        pete_adjustment = 0
+        jess_final_amount = jess_amount
+    if jess_adjustment != 0 and pete_adjustment == 0:
+        pete_final_amount = pete_amount + float(jess_adjustment)
+        jess_final_amount = jess_amount - float(jess_adjustment)
+    if pete_adjustment != 0 and jess_adjustment == 0:
+        jess_final_amount = jess_amount + float(pete_adjustment)
+        pete_final_amount = pete_amount - float(pete_adjustment)
+    if pete_adjustment != 0 and jess_adjustment != 0:
+        difference = float(pete_adjustment) - float(jess_adjustment)
+        if difference > 0:
+            jess_final_amount = jess_amount + difference
+            pete_final_amount = pete_amount 
+        else:
+            pete_final_amount = pete_amount + (difference * -1)
+            jess_final_amount = jess_amount 
+    pete_final_amount = round(pete_final_amount,2)
+    jess_final_amount = round(jess_final_amount,2)
+    return pete_final_amount, jess_final_amount, pete_adjustment, jess_adjustment
+
 #create new table in database if applicable
 def create_new_table(csv_data,table_name):
     #ask user for sheet name and new table name
@@ -91,48 +120,32 @@ def logout():
 @app.route("/totals", methods=["POST", "GET"])
 def totals():
     try:
-        #totals data#
-        file_name = "Sheets/"+request.form["csv_file"]
-        pete_amount,jess_amount = combined_totals(file_name)
-        #adjustments#
-        jess_adjustment = request.form["jess_adjustment"]
-        pete_adjustment = request.form["pete_adjustment"]
-        if jess_adjustment == '':
-            jess_adjustment = 0
-            pete_final_amount = pete_amount
-        if pete_adjustment == '':
-            pete_adjustment = 0
-            jess_final_amount = jess_amount
-        if jess_adjustment != 0 and pete_adjustment == 0:
-            pete_final_amount = pete_amount + float(jess_adjustment)
-            jess_final_amount = jess_amount - float(jess_adjustment)
-        if pete_adjustment != 0 and jess_adjustment == 0:
-            jess_final_amount = jess_amount + float(pete_adjustment)
-            pete_final_amount = pete_amount - float(pete_adjustment)
-        if pete_adjustment != 0 and jess_adjustment != 0:
-            difference = float(pete_adjustment) - float(jess_adjustment)
-            if difference > 0:
-                jess_final_amount = jess_amount + difference
-                pete_final_amount = pete_amount 
-            else:
-                pete_final_amount = pete_amount + (difference * -1)
-                jess_final_amount = jess_amount 
-        #round#
-        pete_final_amount = round(pete_final_amount,2)
-        jess_final_amount = round(jess_final_amount,2)
-        #make new table in SQLite database
-        table_name = request.form["table_name"]
-        table_name = table_name.replace(" ", "") #get rid of spaces
-        table_name = ''.join(e for e in table_name if e.isalnum()) #get rid of special characters
-        if table_name != '':
-            try:
-                table_made = create_new_table(file_name,table_name)
-            except sqlite3.OperationalError:
-                table_made = ("Table with that name already exists")
-        if table_name != '':
-            return render_template('totals.html',pete_amount=str(pete_final_amount),jess_amount=str(jess_final_amount),table_made=table_made, csv_file=file_name, do_not_display=123)
+        if request.form["csv_file"][:7] == "Sheets/":
+            file_name = request.form["csv_file"]
+            pete_final_amount, jess_final_amount, pete_adjustment, jess_adjustment = adjustments(file_name)
+            return render_template('totals.html',pete_amount=str(pete_final_amount),jess_amount=str(jess_final_amount),
+                table_made="No table created", csv_file=file_name, do_not_display=123, 
+                jess_adjustment= jess_adjustment, pete_adjustment= pete_adjustment)
         else:
-            return render_template('totals.html',pete_amount=str(pete_final_amount),jess_amount=str(jess_final_amount),table_made="No table created", csv_file=file_name, do_not_display=123)
+            file_name = "Sheets/"+request.form["csv_file"]
+            pete_final_amount, jess_final_amount, pete_adjustment, jess_adjustment = adjustments(file_name)
+            #make new table in SQLite database
+            table_name = request.form["table_name"]
+            table_name = table_name.replace(" ", "") #get rid of spaces
+            table_name = ''.join(e for e in table_name if e.isalnum()) #get rid of special characters
+            if table_name != '':
+                try:
+                    table_made = create_new_table(file_name,table_name)
+                except sqlite3.OperationalError:
+                    table_made = ("Table with that name already exists")
+            if table_name != '':
+                return render_template('totals.html',pete_amount=str(pete_final_amount),jess_amount=str(jess_final_amount),
+                    table_made=table_made, csv_file=file_name, do_not_display=123, 
+                    jess_adjustment= jess_adjustment, pete_adjustment= pete_adjustment)
+            else:
+                return render_template('totals.html',pete_amount=str(pete_final_amount),jess_amount=str(jess_final_amount),
+                    table_made="No table created", csv_file=file_name, do_not_display=123, 
+                    jess_adjustment= jess_adjustment, pete_adjustment= pete_adjustment)
     except ValueError:
         flash('No spreadsheet found', 'error')
         return redirect('/')
@@ -140,15 +153,21 @@ def totals():
 @app.route("/table-data", methods=["POST", "GET"])
 def table_data():
     file_name = request.form["csv_file"]
+    jess_adjustment = request.form["jess_adjustment"]
+    pete_adjustment = request.form["jess_adjustment"]
     table_data = pd.read_csv (file_name+'.csv') 
     table_data2 = table_data[[' Posted Date',' Card No.',' Description',' Category',' Debit',' Credit']]
     table_data1 = table_data[[' Card No.',' Category',' Debit']]
     groupby_sum1 = table_data1.groupby([' Card No.',' Category']).sum() 
-    return render_template("table_data.html", data=(groupby_sum1.to_html(classes='table')),data_raw=(table_data2.to_html(classes='table')), do_not_display=123, csv_file=file_name)
+    return render_template("table_data.html", data=(groupby_sum1.to_html(classes='table')),
+    data_raw=(table_data2.to_html(classes='table')), do_not_display=123, csv_file=file_name, 
+    jess_adjustment= jess_adjustment, pete_adjustment= pete_adjustment)
 
 @app.route("/past-data", methods=["POST", "GET"])
 def past_data():
     file_name = request.form["csv_file"]
+    jess_adjustment = request.form["jess_adjustment"]
+    pete_adjustment = request.form["pete_adjustment"]
     con = sqlite3.connect("capitalone.db")
     raw_data = con.execute("SELECT name FROM sqlite_master WHERE type='table';")
     table_list =[]
@@ -158,8 +177,11 @@ def past_data():
     if request.method == "POST" and request.form['table_list'] != '':
         table_name = request.form['table_list']
         data = pd.read_sql_query(f"select * from {table_name};", con)
-        return render_template("past_data.html", list=table_list, data=(data.to_html(classes='table')), table_name=table_name, do_not_display=123,csv_file=file_name)
-    return render_template("past_data.html", list=table_list, do_not_display=123,csv_file=file_name)
+        return render_template("past_data.html", list=table_list, data=(data.to_html(classes='table')), 
+        table_name=table_name, do_not_display=123,csv_file=file_name, 
+        jess_adjustment= jess_adjustment, pete_adjustment= pete_adjustment)
+    return render_template("past_data.html", list=table_list, do_not_display=123,csv_file= file_name, 
+    jess_adjustment= jess_adjustment, pete_adjustment= pete_adjustment)
 
 @app.route("/login", methods=['POST', 'GET'])
 def login():

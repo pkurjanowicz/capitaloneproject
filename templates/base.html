@@ -17,15 +17,27 @@
                 <form action="/past-data" method="POST" >
                     <input id="csv_file" type="hidden" name="csv_file" value={{csv_file}} />
                     <input id="csv_file" type="hidden" name="table_list" value="" />
+                    <input id="csv_file" type="hidden" name="jess_adjustment" value="{{jess_adjustment}}" />
+                    <input id="csv_file" type="hidden" name="pete_adjustment" value="{{jess_adjustment}}" />
                     <input type="submit" value="Past Data" class="navbar_buttons" />
                 </form>
             </a> 
             <a>
-                <form action="/table-data" method="post">
+                <form action="/table-data" method="POST">
                     <input id="csv_file" type="hidden" name="csv_file" value={{csv_file}} />
+                    <input id="csv_file" type="hidden" name="jess_adjustment" value="{{jess_adjustment}}" />
+                    <input id="csv_file" type="hidden" name="pete_adjustment" value="{{jess_adjustment}}" />
                     <input type="submit" value="Current Data" class="navbar_buttons"/>
                 </form>
             </a> 
+            <a>
+                <form action="/totals" method="POST" >
+                    <input id="csv_file" type="hidden" name="csv_file" value={{csv_file}} />
+                    <input id="csv_file" type="hidden" name="jess_adjustment" value="{{jess_adjustment}}" />
+                    <input id="csv_file" type="hidden" name="pete_adjustment" value="{{jess_adjustment}}" />
+                    <input type="submit" value="Current Totals" class="navbar_buttons" />
+                </form>
+            </a>
         
             {% endif %} 
         {% endif %} 
