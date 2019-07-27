@@ -38,6 +38,14 @@
                     <input type="submit" value="Current Totals" class="navbar_buttons" />
                 </form>
             </a>
+            <a>
+                <form action="/graphs" method="POST" >
+                    <input id="csv_file" type="hidden" name="csv_file" value={{csv_file}} />
+                    <input id="csv_file" type="hidden" name="jess_adjustment" value="{{jess_adjustment}}" />
+                    <input id="csv_file" type="hidden" name="pete_adjustment" value="{{pete_adjustment}}" />
+                    <input type="submit" value="Graphs" class="navbar_buttons" />
+                </form>
+            </a>
         
             {% endif %} 
         {% endif %} 

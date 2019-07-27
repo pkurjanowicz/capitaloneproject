@@ -7,6 +7,9 @@ import os
 from secrets import secret_key
 from hashutils import make_pw_hash, check_pw_hash
 from os import walk
+import matplotlib.pyplot as plt
+from matplotlib import figure
+
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -199,15 +202,45 @@ def past_data():
     return render_template("past_data.html", list=table_list, do_not_display=123,csv_file= file_name, 
     jess_adjustment= jess_adjustment, pete_adjustment= pete_adjustment)
 
+@app.route("/graphs", methods=['POST', 'GET'])
+def graphs():
+    file_name = request.form["csv_file"]
+    jess_adjustment = request.form["jess_adjustment"]
+    pete_adjustment = request.form["pete_adjustment"]
+    return render_template('underconstruction.html', do_not_display=123, csv_file= file_name, 
+    jess_adjustment= jess_adjustment, pete_adjustment= pete_adjustment)
+    file_name = request.form["csv_file"]
+    jess_adjustment = request.form["jess_adjustment"]
+    pete_adjustment = request.form["pete_adjustment"]
+    con = sqlite3.connect("capitalone.db")
+    cur = con.cursor()
+    cur.execute("SELECT DISTINCT Category FROM {0};".format("May2019"))
+    categories = cur.fetchall()
+    categories2 = []
+    for category in categories:
+        categories2.append(category[0])
+    totals = []
+    category3 = []
+    for category in categories2:
+        cur.execute("SELECT SUM(Debit) FROM {0} WHERE Category = '{1}';".format("May2019", category))
+        totals.append(cur.fetchall()[0][0])
+        category3.append(category)
+
+    figure = plt.figure(figsize=(12, 10))
+    plt.plot(category3,totals)
+    figure.savefig('static/images/myfig.png')
+    return render_template('graphs.html', do_not_display=123, csv_file= file_name, 
+    jess_adjustment= jess_adjustment, pete_adjustment= pete_adjustment)
+
 @app.route("/login", methods=['POST', 'GET'])
 def login():
     session['user'] = ''
     if request.method == "POST":
         email = request.form['email']
-        existing_user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
         password = request.form['password']
-        if existing_user and User.query.filter_by(pw_hash = make_pw_hash(password)).first():
-            session['user'] = existing_user.email
+        if check_pw_hash(password, user.pw_hash):
+            session['user'] = user.email
             return redirect("/")
         else:
             flash('username or password not found', 'error')
