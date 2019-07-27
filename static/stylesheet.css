@@ -269,3 +269,13 @@ body {
     -moz-osx-font-smoothing: grayscale;  
     padding: 0px 50px 75px 50px;
 }
+
+#test_png {
+    background-image: url(images/myfig.png);
+    height: 1000px;
+    width: 1200px;
+    background-position: center;
+    display: block;
+    text-align: center;
+    margin: 0px auto;
+}
