@@ -14,6 +14,8 @@
         {% endfor %}
         </select>
         <input id="csv_file" type="hidden" name="csv_file" value={{csv_file}} />
+        <input id="csv_file" type="hidden" name="jess_adjustment" value="{{jess_adjustment}}" />
+        <input id="csv_file" type="hidden" name="pete_adjustment" value="{{pete_adjustment}}" />
         <input type="submit" value="Submit" class="submit">
         </form>
         <h4>{{data | safe}}</h4>
