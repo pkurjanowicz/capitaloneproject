@@ -9,15 +9,9 @@ from hashutils import make_pw_hash, check_pw_hash
 from os import walk
 import matplotlib.pyplot as plt
 from matplotlib import figure
+from app import app, db
+from models import User, create_new_table, create_new_user, list_of_tables, connect_to_db
 
-
-app = Flask(__name__)
-app.config['DEBUG'] = True
-
-project_dir = os.path.dirname(os.path.abspath(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///{}".format(os.path.join(project_dir, "capitalone.db"))
-app.config['SQLALCHEMY_ECHO'] = True
-db = SQLAlchemy(app)
 app.secret_key = secret_key
 
 def is_email(string):
@@ -35,18 +29,6 @@ def file_names_in_sheets_directory():
     for (dirpath, dirnames, filenames) in walk('sheets'):
         names += filenames
     return names
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True)
-    pw_hash = db.Column(db.String(120))
-    
-    def __init__(self, email, password):
-        self.email = email
-        self.pw_hash = make_pw_hash(password)
-
-    def __repr__(self):
-        return '<User %r>' % self.email
 
 #gathers data from CSV and takes into account credits(row 7) and debits(row 6)#
 def combined_totals(csv_data):
@@ -99,25 +81,6 @@ def adjustments(file):
     pete_final_amount = round(pete_final_amount,2)
     jess_final_amount = round(jess_final_amount,2)
     return pete_final_amount, jess_final_amount, pete_adjustment, jess_adjustment
-
-#create new table in database if applicable
-def create_new_table(csv_data,table_name):
-    #ask user for sheet name and new table name
-    csv_data = str(csv_data)
-    table_name = str(table_name)
-    #connect to database
-    con = sqlite3.connect("capitalone.db")
-    cur = con.cursor()
-    #create database
-    cur.execute("CREATE TABLE {0} (Transaction_Date,Posted_Date,Card_No,Description,Category,Debit,Credit);".format(table_name))
-    #update database with column names
-    column_names = ['Stage','Transaction_Date','Posted_Date','Card_No','Description','Category','Debit','Credit']
-    df = pd.read_csv(csv_data+'.csv',names=column_names) 
-    df = df.iloc[1:]
-    df.to_sql(table_name, con, if_exists='append', index=False)
-    con.commit()
-    con.close()
-    return str(table_name)+" has been created!"
 
 @app.route("/")
 def main_page():
@@ -186,8 +149,8 @@ def past_data():
     file_name = request.form["csv_file"]
     jess_adjustment = request.form["jess_adjustment"]
     pete_adjustment = request.form["pete_adjustment"]
-    con = sqlite3.connect("capitalone.db")
-    raw_data = con.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    con = connect_to_db()
+    raw_data = list_of_tables()
     table_list =[]
     for name in raw_data:
         if name[0] != "user":
@@ -212,7 +175,7 @@ def graphs():
     file_name = request.form["csv_file"]
     jess_adjustment = request.form["jess_adjustment"]
     pete_adjustment = request.form["pete_adjustment"]
-    con = sqlite3.connect("capitalone.db")
+    con = connect_to_db()
     cur = con.cursor()
     cur.execute("SELECT DISTINCT Category FROM {0};".format("May2019"))
     categories = cur.fetchall()
@@ -262,9 +225,7 @@ def register():
             return redirect('/register')
         existing_user = User.query.filter_by(email=email).first()
         if not existing_user:
-            user = User(email=email, password=password)
-            db.session.add(user)
-            db.session.commit()
+            create_new_user(email,password)
             session['user'] = user.email
             return redirect("/")
         else:

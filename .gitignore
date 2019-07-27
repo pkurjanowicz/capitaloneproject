@@ -1,4 +1,5 @@
 /sheets
+/old_sheets
 *.db
 secrets.py
 hashutils.py
