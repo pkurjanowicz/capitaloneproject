@@ -1,6 +1,7 @@
 from app import db
 from hashutils import make_pw_hash, make_salt, check_pw_hash
 import sqlite3
+import pandas as pd
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)

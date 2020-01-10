@@ -43,11 +43,11 @@ def combined_totals(csv_data):
                     Pete_amount += float(row[6])
                 if row[5] != '' and row[2] == "9246":
                     Pete_amount += float(row[5])
-                if row[5] != '' and row[2] == "0717":
+                if row[5] != '' and row[2] == "717" or row[2] == "0717":
                     Jess_amount += float(row[5])
                 if row[6] != '' and row[2] == "9246":
                     Pete_amount -= float(row[6])
-                if row[6] != '' and row[2] == "0717":
+                if row[6] != '' and row[2] == "717" or row[2] == "0717":
                     Jess_amount -= float(row[6])
         return round(Pete_amount,2),round(Jess_amount,2)
     except FileNotFoundError:
@@ -171,7 +171,7 @@ def graphs():
     jess_adjustment = request.form["jess_adjustment"]
     pete_adjustment = request.form["pete_adjustment"]
     return render_template('underconstruction.html', do_not_display=123, csv_file= file_name, 
-    jess_adjustment= jess_adjustment, pete_adjustment= pete_adjustment)
+    jess_adjustment= jess_adjustment, pete_adjustment= pete_adjustment) #page under construction
     file_name = request.form["csv_file"]
     jess_adjustment = request.form["jess_adjustment"]
     pete_adjustment = request.form["pete_adjustment"]

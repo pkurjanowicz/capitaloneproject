@@ -3,3 +3,7 @@
 *.db
 secrets.py
 hashutils.py
+
+/.bundle
+.DS_Store
+.DS_Store?
