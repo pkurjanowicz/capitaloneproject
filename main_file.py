@@ -43,11 +43,11 @@ def combined_totals(csv_data):
                     Pete_amount += float(row[6])
                 if row[5] != '' and row[2] == "9246":
                     Pete_amount += float(row[5])
-                if row[5] != '' and row[2] == "717" or row[2] == "0717":
+                if row[5] != '' and row[2] == "717":
                     Jess_amount += float(row[5])
                 if row[6] != '' and row[2] == "9246":
                     Pete_amount -= float(row[6])
-                if row[6] != '' and row[2] == "717" or row[2] == "0717":
+                if row[6] != '' and row[2] == "717":
                     Jess_amount -= float(row[6])
         return round(Pete_amount,2),round(Jess_amount,2)
     except FileNotFoundError:
